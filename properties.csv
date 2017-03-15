@@ -1,0 +1,4 @@
+data_source,src_user,src_database,src_table,partitioned_tbl,partition_column,target_stg_database,target_parquet_db,target_table
+mysql,root,retail_db,customers,False,NA,retail2_stg,retail2,customers
+mysql,root,retail_db,order_detail,True,trans_Date,retail2_stg,retail2,order_detail
+

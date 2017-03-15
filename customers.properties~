@@ -1,0 +1,13 @@
+nameNode=hdfs://quickstart.cloudera:8020
+jobTracker=quickstart.cloudera:8032
+oozie.wf.application.path=${nameNode}/user/hue/oozie/workspaces/hue-oozie-1488230369.15/workflow.xml
+oozie.use.system.libpath=true
+src_user=root
+partitioned_tbl=False
+target_parquet_db=retail2
+data_source=mysql
+src_database=retail_db
+src_table=customers
+target_stg_database=retail2_stg
+partition_column=NA
+target_table=customers
