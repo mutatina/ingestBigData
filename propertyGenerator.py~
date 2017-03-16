@@ -1,9 +1,0 @@
-
-#Given table infomation in a Dictionary type, this function creates a job.property file.
-def createPropertyfile(tableInfoDictionary):
-	outputFile= open('job.property','w')
-	for key,value in tableInfoDictionary.iteritems():
-       		outputFile.write(key +'='+ value +'\n')	
-	outputFile.close()
-	return
-
