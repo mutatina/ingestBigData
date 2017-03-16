@@ -2,8 +2,10 @@
 """ 
 Main program that runs other modules needed for ingestion.
 CLI arguments : [csv property file ]
-To run this on shell : python ingest.py filepath_of_csv_Property_file
+To run this on shell : python ingest.py filepath_of_csv_Variables_file
 """
+
+
 import sys
 from IsarLibrary import getmeta,createhql
 from myLibrary import getTables,createPropertyfile,createTableInHive,runIngestWorkflow

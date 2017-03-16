@@ -1,0 +1,15 @@
+SET hive.exec.dynamic.partition.mode=nonstrict;
+INSERT INTO TABLE ${target_parquet_db}.${target_table} PARTITION(trans_date='2017-01-25')
+SELECT order_id,order_date,order_customer_id,order_status,order_item_id,order_item_order_id,order_item_product_id,order_item_quantity,order_item_subtotal,order_item_product_price
+from ${target_stg_database}.${target_table};
+
+
+New statement causing errors;
+
+CASE ${partitioned_tbl}
+WHEN "True" Then INSERT INTO ${target_parquet_db}.${target_table} PARTITION(trans_date='2017-01-25') SELECT * from ${target_stg_database}.${target_table}
+ELSE INSERT INTO ${target_parquet_db}.${target_table} SELECT * FROM ${target_stg_database}.${target_table}
+END;
+
+
+check select {list all colummns}
