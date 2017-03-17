@@ -1,5 +1,0 @@
-nameNode=hdfs://quickstart.cloudera:8020
-jobTracker=quickstart.cloudera:8032
-oozie.wf.application.path=${nameNode}/user/cloudera/oozie/project2/ingestWorkflow.xml
-oozie.use.system.libpath=true
-hqlScriptFiles={'hqlFileNonPart':'${nameNode}/user/cloudera/oozie/project2/ingestNonPartitionedTable.hql','hqlFilePart':'${nameNode}/user/cloudera/oozie/project2/ingestPartitionedTable.hql','hqlFilePartRange':'${nameNode}/user/cloudera/oozie/project2/ingestPartitionedTableWithRange.hql'}
