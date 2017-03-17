@@ -1,4 +1,4 @@
-<workflow-app name="IngestfromStage" xmlns="uri:oozie:workflow:0.5">
+<workflow-app name="${target_table}" xmlns="uri:oozie:workflow:0.5">
     <start to="hive2-9f71"/>
     <kill name="Kill">
         <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
@@ -8,12 +8,13 @@
             <job-tracker>${jobTracker}</job-tracker>
             <name-node>${nameNode}</name-node>
             <jdbc-url>jdbc:hive2://quickstart.cloudera:10000/default</jdbc-url>
-            <script>/user/cloudera/oozie/ingestFromSTG.hql</script>
+            <script>${hqlScriptFile}</script>
               <param>target_parquet_db=${target_parquet_db}</param>
               <param>target_stg_database=${target_stg_database}</param>
-              <param>target_table=${target_table}</param>
-	      <param>partitioned_tbl=${partitioned_tbl}</param>
+              <param>target_table=${target_table}</param>   
               <param>partition_column=${partition_column}</param>
+	      <param>min_load_date=${min_load_date}</param>
+	      <param>max_load_date=${max_load_date}</param>
 
 
         </hive2>

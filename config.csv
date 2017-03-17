@@ -1,0 +1,4 @@
+data_source,src_user,src_pwd,src_host,src_database,src_table,partitioned_tbl,partition_column,target_stg_database,target_parquet_db,target_table,split_by
+mysql,root,cloudera,127.0.0.1,retail_db,customers,False,--validate,retail2_stg,retail,customers,--validate
+mysql,root,cloudera,127.0.0.1,retail_db,order_detail,True,trans_date,retail_stg_test,retail,order_details_test2,--split-by
+

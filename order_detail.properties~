@@ -12,5 +12,5 @@ target_stg_database=retail_stg_test
 partition_column=trans_date
 target_table=order_details_test2
 hqlScriptFile=${nameNode}/user/cloudera/oozie/project2/ingestPartitionedTable.hql
-min_load_date=2017-01-28
-max_load_date=2017-01-28
+min_load_date=2017-01-25
+max_load_date=2017-01-25
