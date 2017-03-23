@@ -1,12 +1,11 @@
 import sys,csv,mysql.connector
 from myLibrary import cleanPartitionCol
-def createhql(stage_db,parquet_db,table_name, partition_string, partition_col):
+def createhql(db_name, table_name, partition_string, partition_col):
 	#variable definition
 	#read and write directory,file name(create+tableName+stg OR +parquet), database name retail_stg, retail
 	# table name all all be parameters of this program.
 	#variable definition 
-	database_name_staging = stage_db
-	database_name_pqt = parquet_db
+	database_name = db_name
 	partition =eval(partition_string)
 	#partition =True
 	#partition_col = "part_col"
@@ -15,14 +14,14 @@ def createhql(stage_db,parquet_db,table_name, partition_string, partition_col):
 	stgFileToWrite ='/home/cloudera/hive/create_' + table_name + '_stg.hql'
 	pqtFileToWrite ='/home/cloudera/hive/create_' + table_name + '_parquet.hql'
 	linenum =0
-	stgLineToWriteDropTableHeader='DROP TABLE IF EXISTS ' + database_name_staging + '.' + table_name + ';' + '\n'
-	stgLineToWriteCreateTable='CREATE EXTERNAL TABLE IF NOT EXISTS ' + database_name_staging + '.' + table_name + ' (' + '\n'
+	stgLineToWriteDropTableHeader='DROP TABLE IF EXISTS ' + database_name + '_stg.' + table_name + ';' + '\n'
+	stgLineToWriteCreateTable='CREATE EXTERNAL TABLE IF NOT EXISTS ' + database_name + '_stg.' + table_name + ' (' + '\n'
 	stgLineToWriteDelimit='ROW FORMAT DELIMITED FIELDS TERMINATED BY ' + "'\\001'"  + '\n'
 	stgLineToWriteDelimit2='LINES TERMINATED BY ' + "'\\n'" + '\n'
 	stgLineToWriteFileformat='STORED AS TEXTFILE;'  + '\n'
 	#stgLineToWritePartition='PARTITIONED BY (`' + partition_col + '` date)' + '\n'
-	pqtLineToWriteDropTableHeader='DROP TABLE IF EXISTS ' + database_name_pqt + '.' + table_name + ';' + '\n'
-	pqtLineToWriteCreateTable='CREATE EXTERNAL TABLE IF NOT EXISTS ' + database_name_pqt + '.' + table_name + ' (' + '\n'
+	pqtLineToWriteDropTableHeader='DROP TABLE IF EXISTS ' + database_name + '.' + table_name + ';' + '\n'
+	pqtLineToWriteCreateTable='CREATE EXTERNAL TABLE IF NOT EXISTS ' + database_name + '.' + table_name + ' (' + '\n'
 	pqtLineToWriteStorage='STORED AS PARQUET'  + '\n'
 	pqtLineToWritePartition='PARTITIONED BY (`' + partition_col + '` string)' + '\n'
 	pqtLineToWriteCompress='TBLPROPERTIES("parquet.compression"="SNAPPY");'  + '\n'

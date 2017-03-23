@@ -1,0 +1,4 @@
+
+Python Validator ran at  = Wed Mar 22 12:34:12 2017
+Total mysql rows  = 8610
+Total impala rows  = 8610

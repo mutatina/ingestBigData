@@ -1,25 +1,94 @@
-<workflow-app name="IngestfromStage" xmlns="uri:oozie:workflow:0.5">
-    <start to="hive2-9f71"/>
-    <kill name="Kill">
-        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
-    </kill>
-    <action name="hive2-9f71">
-        <hive2 xmlns="uri:oozie:hive2-action:0.1">
+<workflow-app name="IngestfromStage" xmlns="uri:oozie:workflow:0.1">
+    <start to="sqoop-node"/>
+    <action name="sqoop-node">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
             <job-tracker>${jobTracker}</job-tracker>
             <name-node>${nameNode}</name-node>
-            <jdbc-url>jdbc:hive2://quickstart.cloudera:10000/default</jdbc-url>
-            <script>${hqlScriptFile}</script>
-              <param>target_parquet_db=${target_parquet_db}</param>
-              <param>target_stg_database=${target_stg_database}</param>
-              <param>target_table=${target_table}</param>   
-              <param>partition_column=${partition_column}</param>
-	      <param>min_load_date=${min_load_date}</param>
-	      <param>max_load_date=${max_load_date}</param>
-
-
-        </hive2>
-        <ok to="End"/>
-        <error to="Kill"/>
+			<job-xml>/user/oozie/share/hive-site.xml</job-xml>
+			<arg>import</arg>
+            		<arg>--connect</arg>
+            		<arg>jdbc:mysql://localhost:3306/${src_database}</arg>
+			<arg>--username</arg>
+			<arg>${src_user}</arg>
+			<arg>--password</arg>
+			<arg>${src_pwd}</arg>
+           		<arg>--table</arg>
+            		<arg>${src_table}</arg>
+			<arg>--hive-import</arg>
+			<arg>--hive-table</arg>
+			<arg>${target_stg_database}.${target_table}</arg>
+			<arg>--warehouse-dir</arg>
+			<arg>/user/hive/warehouse/${target_stg_database}.db</arg>
+			<arg>${split_by}</arg>
+			<arg>${partition_column}</arg>
+			<arg>--fields-terminated-by</arg>
+			<arg>\001</arg>
+			<arg>--validate</arg>
+			<arg>--delete-target-dir</arg>
+		</sqoop>    
+        <ok to="hive2-Project"/>
+        <error to="fail"/>
     </action>
-    <end name="End"/>
+    <action name="hive2-Project">
+	<hive2 xmlns="uri:oozie:hive2-action:0.1">
+		<job-tracker>${jobTracker}</job-tracker>
+		<name-node>${nameNode}</name-node>
+		<jdbc-url>jdbc:hive2://quickstart.cloudera:10000/default</jdbc-url>
+		<script>${hqlScriptFile}</script>
+		  <param>target_parquet_db=${target_parquet_db}</param>
+		  <param>target_stg_database=${target_stg_database}</param>
+		  <param>target_table=${target_table}</param>   
+		  <param>partition_column=${partition_column}</param>
+	  	  <param>min_load_date=${min_load_date}</param>
+	  	  <param>max_load_date=${max_load_date}</param>
+	</hive2>
+	<ok to="python-node"/>
+	<error to="fail"/>
+</action>
+<action name="python-node">
+        <shell xmlns="uri:oozie:shell-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <exec>python</exec>
+	    <file>${pythonValidatorPath}</file> 
+			<arg>--user</arg>
+			<arg>${src_user}</arg>
+            		<arg>--password</arg>
+			<arg>${src_pwd}</arg>
+            		<arg>--host</arg>
+			<arg>${src_host}</arg>
+			<arg>--src_database</arg>
+			<arg>${src_database}</arg>
+			<arg>--src_table</arg>
+			<arg>${src_table}</arg>
+			<arg>--target_table</arg>
+			<arg>${target_table}</arg>
+			<arg>--isPartitioned</arg>
+			<arg>${partitioned_tbl}</arg>
+           		<arg>--partition_column</arg>
+			<arg>${partition_column}</arg>
+            		<arg>--impalaHost</arg>
+			<arg>${impalaHost}</arg>
+			<arg>--impalaPort</arg>
+			<arg>${impalaPort}</arg>
+			<arg>--target_stg_database</arg>
+			<arg>${target_stg_database}</arg>
+			<arg>--target_parquet_db</arg>
+			<arg>${target_parquet_db}</arg>
+			<arg>--logFolder</arg>
+			<arg>${logFolder}</arg>
+			<arg>--min_load_date</arg>
+			<arg>${min_load_date}</arg>
+			<arg>--max_load_date</arg>
+			<arg>${max_load_date}</arg>
+            <capture-output/>
+        </shell>
+        <ok to="end"/>
+        <error to="fail"/>
+    </action>
+
+    <kill name="fail">
+        <message>Workflow failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
 </workflow-app>
