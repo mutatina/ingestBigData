@@ -9,7 +9,7 @@ Command Line arguments: user,password,host,src_database,src_table,target_table,i
 from impala.dbapi import connect
 import mysql.connector,time,os,sys,subprocess,optparse
 from optparse import OptionParser
-
+"""
 def argumentParser():
 	parser = OptionParser()
 	parser.add_option("--user", dest="user")
@@ -51,6 +51,26 @@ logFolder=argumentsDictionary['logFolder']
 min_load_date=argumentsDictionary['min_load_date']
 max_load_date =argumentsDictionary['max_load_date']
 
+"""
+
+			
+
+user='retail_dba'
+password='cloudera'
+host='127.0.0.1'
+src_database='retail_db '
+src_table='order_detail' 
+target_table='order_detail' 
+isPartitioned='True' 
+partition_column='trans_date' 
+impalaHost='quickstart.cloudera' 
+impalaPort='21050'
+target_stg_database='retail2_stg' 
+target_parquet_db='retail2'
+logFolder='/home/cloudera/Desktop/Project2/log'
+min_load_date='2016-12-24'
+max_load_date ='2016-12-24' 
+
 
 
 localtime = time.asctime(time.localtime(time.time()))
@@ -60,13 +80,14 @@ log = log + '\nPython Validator ran at  = '+ str(localtime)
 
 
 #Checking  Mysql 
-config = {'user': user, 'password': password, 'host': host,'database': src_database}  
+config = {'user': user, 'password': password, 'host': host,'database': src_database} 
+ 
 cnx =mysql.connector.MySQLConnection(**config)
 if eval(isPartitioned) == True:
 	query = "SELECT COUNT(*) FROM "+ src_database +"."+src_table +" AS T WHERE T."+ partition_column+" BETWEEN '"+ min_load_date +"' AND '"+ max_load_date +"';"
 else:
 	query = "SELECT COUNT(*) FROM " + src_database +"."+src_table +";"
-
+print query
 cursor = cnx.cursor()
 cursor.execute(query)          
 total_mysql_rows = cursor.fetchone()[0]   
@@ -87,7 +108,7 @@ else:
 
 
 cur.execute("invalidate metadata;")
-
+print query
 cur.execute (query)
 result_array=cur.fetchall()
 total_impala_rows =result_array[0][0]

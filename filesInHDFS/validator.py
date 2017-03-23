@@ -55,7 +55,7 @@ max_load_date =argumentsDictionary['max_load_date']
 
 localtime = time.asctime(time.localtime(time.time()))
 log=''
-log = log + '\nPython Validator ran at  = '+ str(localtime)
+log = log + '\nPython Validator for table ' +target_table+ ' ran at  = '+ str(localtime)
 
 
 
@@ -98,6 +98,7 @@ log= '"'+log + '"'
 logFilePath =logFolder +'/log.txt'
 
 _command = "echo " + log + ">>" + logFilePath  # saving  log to local
+#_command = "echo " + log + "| hadoop fs -appendToFile - /user/cloudera/oozie/logFolder/log.txt"
 
 
 subprocess.Popen(_command,shell=True)

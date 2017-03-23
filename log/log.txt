@@ -1,0 +1,20 @@
+
+Python Validator for table customers ran at  = Thu Mar 23 13:13:23 2017
+Total mysql rows  = 12435
+Total impala rows  = 12435
+
+Python Validator for table order_detail ran at  = Thu Mar 23 13:14:29 2017
+Total mysql rows  = 8610
+Total impala rows  = 8610
+
+Python Validator for table customers ran at  = Thu Mar 23 13:23:29 2017
+Total mysql rows  = 12435
+Total impala rows  = 12435
+
+Python Validator for table order_detail ran at  = Thu Mar 23 13:24:33 2017
+Total mysql rows  = 8610
+Total impala rows  = 8610
+
+Python Validator for table customers ran at  = Thu Mar 23 13:30:47 2017
+Total mysql rows  = 12435
+Total impala rows  = 12435

@@ -1,14 +1,13 @@
 
-/*
-Example:
+
+---Example:
   
-INSERT INTO TABLE retail.us_regions SELECT * FROM retail_stg_test.us_regions;
+---INSERT INTO TABLE retail.us_regions SELECT * FROM retail_stg_test.us_regions;
 
-Parameterized: 
+---Parameterized: 
 
-Needs 3 parameters: finaldb name, stage db name, table name(same for both) 
+---Needs 3 parameters: finaldb name, stage db name, table name(same for both) 
 
-*/
 
 
 

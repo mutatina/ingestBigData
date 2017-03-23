@@ -11,7 +11,7 @@
 
 
 
-INSERT INTO TABLE ${target_parquet_db}.${target_table}  SELECT * FROM ${target_stg_database}.${target_table};
+INSERT OVERWRITE TABLE ${target_parquet_db}.${target_table}  SELECT * FROM ${target_stg_database}.${target_table};
 
 
 
