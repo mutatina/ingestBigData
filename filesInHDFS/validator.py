@@ -28,28 +28,28 @@ def argumentParser():
 	parser.add_option("--min_load_date", dest="min_load_date")
 	parser.add_option("--max_load_date", dest="max_load_date")
 	
-	(options, args) = parser.parse_args()	
-	return options.user,options.password,options.host,options.src_database,options.src_table,options.target_table,\ 
-	options.isPartitioned,options.partition_column,options.impalaHost,options.impalaPort,options.target_stg_database,options.target_parquet_db,\
-        options.logFolder,options.min_load_date,options.max_load_date
+	options, args = parser.parse_args()
+        option_dict = vars(options)
+	return option_dict
 
 			
 			
-
-
-
-
-
-user,password,host,src_database,src_table,target_table,\
-isPartitioned,partition_column,impalaHost,impalaPort,target_stg_database,target_parquet_db,\
-logFolder,min_load_date,max_load_date = argumentParser()
-
-if max_load_date is  None:
-	max_load_date=''
-if min_load_date is  None:
-	min_load_date=''
-
-
+argumentsDictionary=argumentParser()
+user=argumentsDictionary['user']
+password=argumentsDictionary['password']
+host=argumentsDictionary['host']
+src_database=argumentsDictionary['src_database']
+src_table=argumentsDictionary['src_table']
+target_table=argumentsDictionary['target_table']
+isPartitioned=argumentsDictionary['isPartitioned']
+partition_column=argumentsDictionary['partition_column']
+impalaHost=argumentsDictionary['impalaHost']
+impalaPort=argumentsDictionary['impalaPort']
+target_stg_database=argumentsDictionary['target_stg_database']
+target_parquet_db=argumentsDictionary['target_parquet_db']
+logFolder=argumentsDictionary['logFolder']
+min_load_date=argumentsDictionary['min_load_date']
+max_load_date =argumentsDictionary['max_load_date']
 
 
 
@@ -62,7 +62,7 @@ log = log + '\nPython Validator ran at  = '+ str(localtime)
 #Checking  Mysql 
 config = {'user': user, 'password': password, 'host': host,'database': src_database}  
 cnx =mysql.connector.MySQLConnection(**config)
-if isPartitioned == True:
+if eval(isPartitioned) == True:
 	query = "SELECT COUNT(*) FROM "+ src_database +"."+src_table +" AS T WHERE T."+ partition_column+" BETWEEN '"+ min_load_date +"' AND '"+ max_load_date +"';"
 else:
 	query = "SELECT COUNT(*) FROM " + src_database +"."+src_table +";"
@@ -79,7 +79,7 @@ log = log +'\nTotal mysql rows  = ' + str(total_mysql_rows)
 conn = connect(host=impalaHost, port=impalaPort)
 cur = conn.cursor()
 
-if isPartitioned == True:
+if eval(isPartitioned) == True:
 	query = "SELECT COUNT(*) FROM "+ target_parquet_db +"."+target_table +" AS T WHERE T."+ partition_column+" BETWEEN '"+ min_load_date +"' AND '"+ max_load_date +"';"
 else:
 	query = "SELECT COUNT(*) FROM " + target_parquet_db +"."+target_table +";"
@@ -100,5 +100,5 @@ logFilePath =logFolder +'/log.txt'
 _command = "echo " + log + ">>" + logFilePath  # saving  log to local
 
 
-subprocess.Popen(_command,shell=True)"""
+subprocess.Popen(_command,shell=True)
 

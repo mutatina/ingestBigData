@@ -7,8 +7,7 @@ Description:Main program that runs other modules needed for ingestion.
 """
 
 import sys
-from IsarLibrary import getmeta,createhql
-from myLibrary import getTables,createPropertyfile,createTableInHive,runIngestWorkflow,getJobStatus,runAggregationWorkflow
+from myLibrary import getTables,createPropertyfile,createTableInHive,runIngestWorkflow,getJobStatus,runAggregationWorkflow,getmeta,createhql
 
 #Parsing CLI arguments
 csvFile = sys.argv[1]
@@ -26,10 +25,10 @@ jobsDict={'success':{},'fail':{}}   #Dictionary to track passsed and failed jobs
 
 
 for table in  listOfTablesInfo:  
-	getmeta(table['src_database'],table['src_table'],table['src_user'],table['src_pwd'],table['src_host'])
+	"""getmeta(table['src_database'],table['src_table'],table['src_user'],table['src_pwd'],table['src_host'])
 	createhql(table['target_stg_database'],table['target_parquet_db'] ,table['src_table'],table['partitioned_tbl'] ,table['partition_column'])
 	createPropertyfile(table,varFile,minload,maxload)
-	createTableInHive(table['src_table'])
+	createTableInHive(table['src_table'])"""
 	runIngestWorkflow(table['src_table'],jobsDict)
 	
 

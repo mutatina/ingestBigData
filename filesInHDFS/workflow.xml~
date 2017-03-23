@@ -50,37 +50,37 @@
             <job-tracker>${jobTracker}</job-tracker>
             <name-node>${nameNode}</name-node>
             <exec>python</exec>
+			<argument>--user</argument>
+			<argument>${src_user}</argument>
+			<argument>--password</argument>
+			<argument>${src_pwd}</argument>
+			<argument>--host</argument>
+			<argument>${src_host}</argument>
+			<argument>--src_database</argument>
+			<argument>${src_database}</argument>
+			<argument>--src_table</argument>
+			<argument>${src_table}</argument>
+			<argument>--target_table</argument>
+			<argument>${target_table}</argument>
+			<argument>--isPartitioned</argument>
+			<argument>${partitioned_tbl}</argument>
+			<argument>--partition_column</argument>
+			<argument>${partition_column}</argument>
+			<argument>--impalaHost</argument>
+			<argument>${impalaHost}</argument>
+			<argument>--impalaPort</argument>
+			<argument>${impalaPort}</argument>
+			<argument>--target_stg_database</argument>
+			<argument>${target_stg_database}</argument>
+			<argument>--target_parquet_db</argument>
+			<argument>${target_parquet_db}</argument>
+			<argument>--logFolder</argument>
+			<argument>${logFolder}</argument>
+			<argument>--min_load_date</argument>
+			<argument>${min_load_date}</argument>
+			<argument>--max_load_date</argument>
+			<argument>${max_load_date}</argument>
 	    <file>${pythonValidatorPath}</file> 
-			<arg>--user</arg>
-			<arg>${src_user}</arg>
-            		<arg>--password</arg>
-			<arg>${src_pwd}</arg>
-            		<arg>--host</arg>
-			<arg>${src_host}</arg>
-			<arg>--src_database</arg>
-			<arg>${src_database}</arg>
-			<arg>--src_table</arg>
-			<arg>${src_table}</arg>
-			<arg>--target_table</arg>
-			<arg>${target_table}</arg>
-			<arg>--isPartitioned</arg>
-			<arg>${partitioned_tbl}</arg>
-           		<arg>--partition_column</arg>
-			<arg>${partition_column}</arg>
-            		<arg>--impalaHost</arg>
-			<arg>${impalaHost}</arg>
-			<arg>--impalaPort</arg>
-			<arg>${impalaPort}</arg>
-			<arg>--target_stg_database</arg>
-			<arg>${target_stg_database}</arg>
-			<arg>--target_parquet_db</arg>
-			<arg>${target_parquet_db}</arg>
-			<arg>--logFolder</arg>
-			<arg>${logFolder}</arg>
-			<arg>--min_load_date</arg>
-			<arg>${min_load_date}</arg>
-			<arg>--max_load_date</arg>
-			<arg>${max_load_date}</arg>
             <capture-output/>
         </shell>
         <ok to="end"/>
