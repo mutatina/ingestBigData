@@ -1,0 +1,4 @@
+
+SET hive.exec.dynamic.partition.mode=nonstrict;
+INSERT INTO TABLE retail2.commission PARTITION(trans_date)
+SELECT * FROM retail2.final WHERE trans_date  BETWEEN '${min_load_date}' AND '${max_load_date}';

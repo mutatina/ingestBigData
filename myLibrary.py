@@ -1,5 +1,34 @@
 import subprocess,csv,urllib2,json,time
 import sys,csv,mysql.connector
+from datetime import datetime,timedelta
+
+from impala.dbapi import connect
+
+
+
+def divideDates(minload,maxload,dateRange):
+	"""
+	Give dates like  from "2016-12-25" to "2017-02-27": with date range :10
+
+	this function returns a list of  dictionaries conatining 5 days range like
+	[{'maxload': '2017-01-04', 'minload': '2016-12-25'}, {'maxload': '2017-01-14', 'minload': '2017-01-05'},
+	 {'maxload': '2017-01-24', 'minload': '2017-01-15'}, {'maxload': '2017-02-03', 'minload': '2017-01-25'},
+         {'maxload': '2017-02-13', 'minload': '2017-02-04'}, {'maxload': '2017-02-23', 'minload': '2017-02-14'}, 
+	 {'maxload': '2017-02-27', 'minload': '2017-02-24'}]
+	"""
+
+	mindate=datetime.strptime(minload, '%Y-%m-%d').date()
+	maxload=datetime.strptime(maxload, '%Y-%m-%d').date()
+	listOfdates=[]	
+	maxdate= mindate
+	while mindate <= maxload:
+    		maxdate += timedelta(dateRange)
+		if maxdate > maxload:
+			maxdate =maxload
+    		listOfdates.append({'minload':mindate.strftime("%Y-%m-%d"),'maxload':maxdate.strftime("%Y-%m-%d")})
+    		mindate = maxdate + timedelta(1)
+    	return listOfdates
+
 def createPropertyfile(tableInfoDictionary,varFile,minload,maxload):
 	"""
 	Name:createPropertyfile
@@ -20,18 +49,18 @@ def createPropertyfile(tableInfoDictionary,varFile,minload,maxload):
 	hqlScriptDict= eval(hqlScriptFiles)
 	hqlScriptFile=""
 	if eval(tableInfoDictionary['partitioned_tbl']):
-		print minload,maxload
+		
 		if minload and maxload:   #If dates have been provided
-			print 'Dates have been provided'
+			#print 'Dates have been provided'
 			hqlScriptFile= hqlScriptDict['hqlFilePartRange']
 		else:	
-			print 'No dates provided ,using script for loading ALL partitioned table'
+			#print 'No dates provided ,using script for loading ALL partitioned table'
 			hqlScriptFile=	hqlScriptDict['hqlFilePart']
 			minload='NA'
 			maxload='NA'
 
 	else: 
-		print "Non partitioned table detected going to use script for not partitioned table"
+		#print "Non partitioned table detected going to use script for not partitioned table"
 		hqlScriptFile=hqlScriptDict['hqlFileNonPart']
 		minload='NA'
 		maxload='NA'
@@ -55,7 +84,7 @@ def createPropertyfile(tableInfoDictionary,varFile,minload,maxload):
 	for key,value in tableInfoDictionary.iteritems():
        		outputFile.write(key +'='+ value +'\n')	
 	outputFile.close()
-	print 'properties file generated: ',outputFileString
+	print 'Properties file',outputFileString,'generated for the dates' ,minload,'to',maxload
 	return
 
 
@@ -84,7 +113,7 @@ def createTableInHive(table_name):
 
 	return
 
-def runIngestWorkflow(table_name,jobsDict):
+def runIngestWorkflow(table_name,jobsDict,minload,maxload):
 	"""
 	Name:runIngestWorkflow
 	Description:This function runs the oozie command  for the given table  and reports the results in a success/fail dictionary given.
@@ -103,15 +132,15 @@ def runIngestWorkflow(table_name,jobsDict):
 		
 	if error_output:
 			
-		print ("ERROR Could not run the oozie workflow for table :"+table_name)
+		print ("ERROR Could not run the oozie workflow for table :"+ table_name + ' from ' +minload+' to '+maxload)
 		print('Details:',error_output)
-		jobsDict['fail'][table_name]=error_output
+		jobsDict['fail'][table_name + ' from ' +minload+' to '+maxload]=error_output
 
 	if success_output:
 		oozieJobID = success_output[success_output.find(':')+1:success_output.find('\n')].strip()	
-		print ("Ozzie job succesfully submitted for table : "+table_name)
+		print ("Ozzie job succesfully submitted for table : "+ table_name + ' from ' +minload+' to '+maxload)
 		print ('oozieJobID ',oozieJobID)
-		jobsDict['success'][table_name]=oozieJobID
+		jobsDict['success'][table_name + ' from ' +minload+' to '+maxload]=oozieJobID
 
 	return
 
@@ -164,19 +193,19 @@ def getJobStatus(jobsDict):
 					
 					jobsDict['success'][table]='SUCCEEDED'
 					jobsCompleted = jobsCompleted + 1
-					print('Current status for table:',table, ' is ',outputDict['status'])
+					print'Table: '+table+ ' has successfully been ingested with status: '+outputDict['status']
 					
 					
 
 				elif outputDict['status'] in ['FAILED','KILLED','TIMEDOUT']:
-					print('Current status for table:',table, ' is ',outputDict['status'])
+					print 'Table: '+table+ ' has FAILED ingestion with status '+outputDict['status']
 					jobsCompleted = jobsCompleted + 1		
 					jobsDict['fail'][table]=outputDict['status']
 					jobsDict['success'][table]=outputDict['status']
 					
 					
 				else:	
-					print 'Current status for table: '+ table  +' is ' + outputDict['status']
+					print 'Current ingestion status for table: '+ table  +' is ' + outputDict['status']
 				
 					time.sleep(5)
 						
@@ -185,21 +214,55 @@ def getJobStatus(jobsDict):
 
 
 
-def runAggregationWorkflow(jobsDict):
+def runAggregationWorkflow():
 	"""
 	Name:runAggregationWorkflow
-	Description:	This function basically checks if any ingestion workflow jobs have failed and if not then it runs the aggregation workflow.
-	Parameters:Dictionary of success and failed jobs
+	Description:
 	"""
-	if jobsDict['fail']: 
-		print "Can not run Aggregation  workflow , there exists at least one table that failed to move."
-		return
-	else:
-		print "All submitted jobs succedded, running the aggregation workflow now"
-		#Call aggregation workflow here
-		return
+	
+	oozieCommand =	"oozie job -oozie http://localhost:11000/oozie -config aggregation.properties -run"
+	
+		
+	p=subprocess.Popen(oozieCommand,shell=True,stderr=subprocess.PIPE,stdout=subprocess.PIPE)
+	
+	error_output= p.stderr.readline()
+	success_output = p.stdout.readline()
+		
+	if error_output:
+			
+		print('Error Details:',error_output)
+		
+
+	if success_output:
+			
+		print ("Ozzie job was succesfully submitted!")	
+	
+	return
 
 
+def Get_Last_Partition_Date(table_name):
+#
+#   Given a table name, returns "Next_partition_date" formatted as a string to be stuffed back into a new job.properties for that table
+#	
+#	print('entering Get_Last_Partition_Date')
+	one_day = timedelta(days = 1)
+#	two_days = timedelta(days = 2)
+	conn = connect(host='localhost', port=21050)
+	cursor = conn.cursor()
+	exec_str = 'SELECT max(trans_date) maximpaladate FROM retail2.' + table_name
+	cursor.execute(exec_str)
+	load_min_date = cursor.fetchone()
+	load_min_date =load_min_date[-1].strip()
+#	print 'last_load_date=' + load_min_date
+#	print (type(load_min_date))
+	date_temp = datetime.strptime(load_min_date, '%Y-%m-%d')
+	d = datetime.date(date_temp)
+	Next_partition_temp = d + one_day
+	Next_partition_date = datetime.strftime(Next_partition_temp,'%Y-%m-%d')
+	#print ('Reformatted date is now ', Next_partition_date)
+	currentDate =datetime.now().strftime('%Y-%m-%d')
+
+	return (Next_partition_date,currentDate)
 
 
 
@@ -357,6 +420,7 @@ def getmeta(db_name, table_name,user,password,mySqlHost):
 	query = query_start + "'" + table_name + "'" + query_end + "'" + db_name + "'"
 	cursor.execute(query)
 	result=cursor.fetchall()
+	
 	#file path is an optional parameter, if you want to keep it as an in parameter your choice
 	# "customers".csv is a variable ie. parameter passed to this program in quotes 
 	#print(query)
