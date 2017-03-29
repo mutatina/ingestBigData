@@ -1,120 +1,80 @@
 
-Python Validator for table order_detail ran at  = Sat Mar 25 08:24:44 2017
-Total mysql rows  = 34440
-Total impala rows  = 129150
-
-Python Validator for table order_detail ran at  = Sat Mar 25 08:25:51 2017
-Total mysql rows  = 0
-Total impala rows  = 0
-
-Python Validator for table order_detail ran at  = Sat Mar 25 08:26:55 2017
-Total mysql rows  = 0
-Total impala rows  = 0
-
-Python Validator for table order_detail ran at  = Sat Mar 25 08:28:02 2017
-Total mysql rows  = 0
-Total impala rows  = 0
-
-Python Validator for table order_detail ran at  = Sat Mar 25 08:29:05 2017
-Total mysql rows  = 0
-Total impala rows  = 0
-
-Python Validator for table order_detail ran at  = Sat Mar 25 08:30:12 2017
-Total mysql rows  = 0
-Total impala rows  = 0
-
-Python Validator for table order_detail ran at  = Sat Mar 25 08:31:20 2017
-Total mysql rows  = 43050
-Total impala rows  = 86100
-
-Python Validator for table order_detail ran at  = Sat Mar 25 08:35:25 2017
-Total mysql rows  = 0
-Total impala rows  = 0
-
-Python Validator for table order_detail ran at  = Sat Mar 25 08:36:28 2017
-Total mysql rows  = 0
-Total impala rows  = 0
-
-Python Validator for table order_detail ran at  = Sat Mar 25 08:37:30 2017
-Total mysql rows  = 0
-Total impala rows  = 0
-
-Python Validator for table order_detail ran at  = Sat Mar 25 08:38:33 2017
-Total mysql rows  = 0
-Total impala rows  = 0
-
-Python Validator for table order_detail ran at  = Sat Mar 25 08:39:42 2017
-Total mysql rows  = 43050
-Total impala rows  = 86100
-
-Python Validator for table order_detail ran at  = Sat Mar 25 08:40:50 2017
-Total mysql rows  = 34440
-Total impala rows  = 68880
-
-Python Validator for table order_detail ran at  = Sat Mar 25 08:41:56 2017
-Total mysql rows  = 17220
-Total impala rows  = 51660
-
-Python Validator for table order_detail ran at  = Sat Mar 25 08:42:52 2017
-Total mysql rows  = 8610
-Total impala rows  = 25830
-
-Python Validator for table order_detail ran at  = Sat Mar 25 08:51:42 2017
-Total mysql rows  = 34440
-Total impala rows  = 103320
-
-Python Validator for table order_detail ran at  = Sat Mar 25 08:52:42 2017
-Total mysql rows  = 25830
-Total impala rows  = 94710
-
-Python Validator for table order_detail ran at  = Sat Mar 25 08:53:46 2017
-Total mysql rows  = 17218
-Total impala rows  = 43048
-
-Python Validator for table employee ran at  = Mon Mar 27 03:25:56 2017
+Python Validator for table employee ran at  = Tue Mar 28 10:21:57 2017
 Total mysql rows  = 10
 Total impala rows  = 10
 
-Python Validator for table us_regions ran at  = Mon Mar 27 03:28:40 2017
+Python Validator for table us_regions ran at  = Tue Mar 28 10:23:54 2017
 Total mysql rows  = 5
 Total impala rows  = 5
 
-Python Validator for table us_state_codes ran at  = Mon Mar 27 03:30:18 2017
-Total mysql rows  = 46
-Total impala rows  = 46
-
-Python Validator for table us_state_reg_emp_br ran at  = Mon Mar 27 03:31:55 2017
-Total mysql rows  = 167
-Total impala rows  = 167
-
-Python Validator for table customers ran at  = Mon Mar 27 03:33:33 2017
+Python Validator for table customers ran at  = Tue Mar 28 10:25:07 2017
 Total mysql rows  = 12435
 Total impala rows  = 12435
 
-Python Validator for table categories ran at  = Mon Mar 27 03:35:11 2017
-Total mysql rows  = 58
-Total impala rows  = 58
+Python Validator for table order_detail ran at  = Tue Mar 28 10:26:17 2017
+Total mysql rows  = 0
+Total impala rows  = 0
 
-Python Validator for table departments ran at  = Mon Mar 27 03:36:43 2017
-Total mysql rows  = 6
-Total impala rows  = 6
+Python Validator for table order_detail ran at  = Tue Mar 28 10:27:30 2017
+Total mysql rows  = 43050
+Total impala rows  = 180810
 
-Python Validator for table order_items ran at  = Mon Mar 27 03:38:16 2017
-Total mysql rows  = 172198
-Total impala rows  = 172198
+Python Validator for table order_detail ran at  = Tue Mar 28 10:28:42 2017
+Total mysql rows  = 0
+Total impala rows  = 0
 
-Python Validator for table orders ran at  = Mon Mar 27 03:39:49 2017
-Total mysql rows  = 68883
-Total impala rows  = 68883
+Python Validator for table order_detail ran at  = Tue Mar 28 10:29:54 2017
+Total mysql rows  = 0
+Total impala rows  = 0
 
-Python Validator for table products ran at  = Mon Mar 27 03:41:11 2017
-Total mysql rows  = 1345
-Total impala rows  = 1345
+Python Validator for table order_detail ran at  = Tue Mar 28 10:31:02 2017
+Total mysql rows  = 0
+Total impala rows  = 0
 
-Python Validator for table employee ran at  = Mon Mar 27 03:47:45 2017
+Python Validator for table order_detail ran at  = Tue Mar 28 10:32:16 2017
+Total mysql rows  = 0
+Total impala rows  = 0
+
+Python Validator for table order_detail ran at  = Tue Mar 28 10:33:56 2017
+Total mysql rows  = 34440
+Total impala rows  = 103320
+
+Python Validator for table order_detail ran at  = Tue Mar 28 10:35:25 2017
+Total mysql rows  = 8610
+Total impala rows  = 25830
+
+Python Validator for table order_detail ran at  = Tue Mar 28 10:36:39 2017
+Total mysql rows  = 0
+Total impala rows  = 0
+
+Python Validator for table order_detail ran at  = Tue Mar 28 10:37:53 2017
+Total mysql rows  = 0
+Total impala rows  = 0
+
+Python Validator for table order_detail ran at  = Tue Mar 28 10:39:06 2017
+Total mysql rows  = 0
+Total impala rows  = 0
+
+Python Validator for table order_detail ran at  = Tue Mar 28 10:40:20 2017
+Total mysql rows  = 34440
+Total impala rows  = 129150
+
+Python Validator for table order_detail ran at  = Tue Mar 28 10:41:40 2017
+Total mysql rows  = 17220
+Total impala rows  = 68880
+
+Python Validator for table employee ran at  = Tue Mar 28 10:53:40 2017
 Total mysql rows  = 10
 Total impala rows  = 10
 
-Python Validator for table us_regions ran at  = Mon Mar 27 03:54:05 2017
+Python Validator for table us_regions ran at  = Tue Mar 28 10:55:33 2017
 Total mysql rows  = 5
 Total impala rows  = 5
+
+Python Validator for table customers ran at  = Tue Mar 28 10:56:42 2017
+Total mysql rows  = 12435
+Total impala rows  = 12435
+
+Python Validator for table order_detail ran at  = Tue Mar 28 10:57:59 2017
+Total mysql rows  = 8610
+Total impala rows  = 25830

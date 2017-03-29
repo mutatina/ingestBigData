@@ -214,28 +214,41 @@ def getJobStatus(jobsDict):
 
 
 
-def runAggregationWorkflow():
+def runAggregationWorkflow(listOfDateRanges,jobsDict):
 	"""
 	Name:runAggregationWorkflow
 	Description:
 	"""
+	f = open('aggregation.properties','r')
+	file_str = f.read() 
+	f.close()
 	
-	oozieCommand =	"oozie job -oozie http://localhost:11000/oozie -config aggregation.properties -run"
-	
-		
-	p=subprocess.Popen(oozieCommand,shell=True,stderr=subprocess.PIPE,stdout=subprocess.PIPE)
-	
-	error_output= p.stderr.readline()
-	success_output = p.stdout.readline()
-		
-	if error_output:
-			
-		print('Error Details:',error_output)
-		
 
-	if success_output:
+       
+
+	for dates in listOfDateRanges: 
+		new_str = file_str +'minload='+dates['minload']+ '\nmaxload='+dates['maxload']
+		print dates
+		'''f = open('job.properties', 'w') 
+		f.write(new_str)
+		f.close()
+	
+		oozieCommand =	"oozie job -oozie http://localhost:11000/oozie -config job.properties -run"	
+		p=subprocess.Popen(oozieCommand,shell=True,stderr=subprocess.PIPE,stdout=subprocess.PIPE)	
+		error_output= p.stderr.readline()
+		success_output = p.stdout.readline()
+		
+		if error_output:
 			
-		print ("Ozzie job was succesfully submitted!")	
+			print ("ERROR Could not run the oozie workflow   from " +dates['minload']+' to '+ dates['maxload'])
+			print('Details:',error_output)
+			jobsDict['fail']['Aggregation from ' + dates['minload']+' to '+ dates['maxload']]=error_output
+
+		if success_output:
+			oozieJobID = success_output[success_output.find(':')+1:success_output.find('\n')].strip()	
+			print ("Ozzie job succesfully submitted for dates: "+dates['minload']+' to '+ dates['maxload'])
+			print ('oozieJobID ',oozieJobID)
+			jobsDict['success']['Aggregation from ' + dates['minload']+' to '+ dates['maxload']]=oozieJobID'''
 	
 	return
 

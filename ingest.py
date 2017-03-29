@@ -21,31 +21,32 @@ if len(sys.argv) > 3:
 	dateRange =int(sys.argv[5])
 
 
-
+listOfDateRanges=[]
 listOfTablesInfo=getTables(csvFile) #List of Mysqly Tables infomation obtained from the csv file
 jobsDict={'success':{},'fail':{}}   #Dictionary to track passsed and failed jobs. 
 
-
+'''
 for table in  listOfTablesInfo:   # Prepping the data for ingestion
 	getmeta(table['src_database'],table['src_table'],table['src_user'],table['src_pwd'],table['src_host'])
 	createhql(table['target_stg_database'],table['target_parquet_db'] ,table['src_table'],table['partitioned_tbl'] ,table['partition_column'])	
-	#createTableInHive(table['src_table'])
+	createTableInHive(table['src_table'])
 
-
+'''
 for table in  listOfTablesInfo:  # creating .properties file and execute ingestion
 	if eval(table['partitioned_tbl']) == True:
 		if minload=='':
 			partitionTableName=table['target_table'] 
 			(minload,maxload)=Get_Last_Partition_Date(partitionTableName)
-				
-		for dates in divideDates(minload,maxload,dateRange):
-			createPropertyfile(table,varFile,dates['minload'],dates['maxload'])
-			runIngestWorkflow(table['src_table'],jobsDict,dates['minload'],dates['maxload'])			
+		
+		listOfDateRanges=divideDates(minload,maxload,dateRange)		
+		for dates in listOfDateRanges:
+			'''createPropertyfile(table,varFile,dates['minload'],dates['maxload'])
+			(table['src_table'],jobsDict,dates['minload'],dates['maxload'''
 
 	else:
 		
-		createPropertyfile(table,varFile,minload,maxload)
-		runIngestWorkflow(table['src_table'],jobsDict,minload,maxload)
+		'''createPropertyfile(table,varFile,minload,maxload)
+		runIngestWorkflow(table['src_table'],jobsDict,minload,maxload)'''
 	
 
 getJobStatus(jobsDict)
@@ -57,5 +58,6 @@ if jobsDict['fail']:
 	
 else:
 	print "All submitted jobs succedded, running the aggregation workflow now"
-	runAggregationWorkflow()
-  
+	runAggregationWorkflow(listOfDateRanges,jobsDict)
+
+#getJobStatus(jobsDict)
